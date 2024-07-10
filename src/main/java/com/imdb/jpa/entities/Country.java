@@ -1,5 +1,6 @@
 package com.imdb.jpa.entities;
 
+import java.util.Objects;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -34,7 +35,13 @@ public class Country {
 	/** adresses */
 	@OneToMany(mappedBy = "country")
 	private Set<Address> adresses;
-	
+
+	/** Constructor
+	 *
+	 */
+	public Country() {
+	}
+
 	/** Constructor
 	 * @param name
 	 * @param url
@@ -44,21 +51,28 @@ public class Country {
 		this.url = url;
 	}
 
-	/** Constructor
-	 * 
-	 */
-	public Country() {
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Country country = (Country) o;
+		return Objects.equals(name, country.name) && Objects.equals(url, country.url);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, url);
 	}
 
 	/** Getter for nom
 	 * @return the nom
 	 */
 	public String getName() {
-		return name != null ? name : ""; 
+		return name ;
 	}
 
 	/** Setter for nom
-	 * @param nom the nom to set
+	 * @param name the nom to set
 	 */
 	public void setName(String name) {
 		this.name = name;

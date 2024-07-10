@@ -4,7 +4,6 @@ import com.imdb.jpa.entities.Actor;
 import com.imdb.jpa.entities.Address;
 import com.imdb.jpa.utils.Convert;
 import com.imdb.jpa.utils.FileSource;
-
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -18,10 +17,9 @@ public abstract class ActorReader {
      * (parseStringBeforeAdd)
      *
      * @param url from Csv file in main/resources
-     * @return HashMap <String, Actor> The key of HashMap corresponding to Actor id
+     * @return HashMap <String,Actor>The key of HashMap corresponding to Actor id
      */
     public static Map<String, Actor> readFile(String url) {
-
         Map<String, Actor> actorMap = new HashMap<>();
         List<String> linesList = null;
 
@@ -32,7 +30,6 @@ public abstract class ActorReader {
             Actor actor = parseLine(data);
             actorMap.put(actor.getId(), actor);
         }
-
         return actorMap;
     }
 
@@ -46,34 +43,24 @@ public abstract class ActorReader {
      * @return Actor Object
      */
     public static Actor parseLine(String line) {
-
         String[] column = line.split(";", -1);
         Actor actor = new Actor();
-
-//		if (column.length == 7) {
-//			System.err.println("attention");
-//		}
-
         String id = column[0];
         String name = column[1];
-
         LocalDate birthdayDate = null;
         try {
             if (column[2].split(" ").length == 3) {
                 birthdayDate = Convert.UsDate(column[2]);
             }
-
         } catch (Exception e) {
             System.err.println(e.getMessage());
             birthdayDate=null;
         }
-
-
         Address birthplace = AddressReader.parseLine(column[3]);
 
         String size = null;
         if(column[4].length() < 7) {
-            size = column[4].replaceAll("m", "").trim();
+            size = column[4].replace("m", "").trim();
         }
         String url = column[5];
 
@@ -83,8 +70,6 @@ public abstract class ActorReader {
         actor.setUrl(url);
         actor.setBirthdayDate(birthdayDate);
         actor.setAdress(birthplace);
-
         return actor;
-
     }
 }
